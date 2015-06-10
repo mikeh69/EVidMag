@@ -191,9 +191,6 @@ def main_loop(cap):
         if rotate180:
             working_img = cv2.flip(working_img, -1)  # compensate for webcam being mounted effectively upside-down
 
-        if inverted:
-            working_img = 255 - working_img
-
         if magnification > 1.0:
             height, width = working_img.shape[:2]
             cropped_img = working_img[0.5 * height * (1 - 1 / magnification):0.5 * height * (1 + 1 / magnification),
@@ -221,16 +218,19 @@ def main_loop(cap):
 
             working_img = np.array(pil_image) # convert PIL-format image back to OpenCV format
 
+        if autocontrast:
+            grayscale_img = cv2.cvtColor(working_img, cv2.COLOR_BGR2GRAY)
+            working_img = cv2.adaptiveThreshold(grayscale_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+                cv2.THRESH_BINARY, 99, 2)
+            if black_on_yellow:
+                working_img = cv2.cvtColor(working_img,cv2.COLOR_GRAY2RGB) # convert back to RGB image
+
         if black_on_yellow:
             # note that [:,:,0] is blue, [:,:,1] is green, [:,:,2] is red
             working_img[:, :, 0] = 0
 
-        if autocontrast:
-            grayscale_img = cv2.cvtColor(working_img, cv2.COLOR_BGR2GRAY)
-            working_img = cv2.equalizeHist(grayscale_img)
-        # or... try Contrast-Limited Adaptive Histogram Equalization:
-        #clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-        #working_img = clahe.apply(grayscale_img)
+        if inverted:
+            working_img = 255 - working_img
 
         if autofocus:
             focusval = UVC_functions.get_focus()
