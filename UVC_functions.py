@@ -23,7 +23,7 @@ def get_focus():
 		return
 	uvc_stdout = ""
 	cmd = "uvcdynctrl -d " + devname + " -g 'Focus (absolute)'"
-	print("UVC_get_focus command:", cmd)
+#	print("UVC_get_focus command:", cmd)
 	args = shlex.split(cmd)
 	uvc_result = subprocess.call(args)
 	if uvc_result == 0: # command worked OK
@@ -40,7 +40,7 @@ def set_focus(focusval):
 		return
 	cmd = "uvcdynctrl -d " + devname + " -s 'Focus (absolute)' " + str(focusval)
 #	cmd = "uvcdynctrl -d " + devname + " -s 'Focus' " + str(focusval)
-	print("UVC_set_focus command:", cmd)
+#	print("UVC_set_focus command:", cmd)
 	args = shlex.split(cmd)
 	uvc_result = subprocess.call(args)
 	return uvc_result
@@ -54,7 +54,7 @@ def set_autofocus(auto_on_off):
 	else:
 		setval = 0
 	cmd = "uvcdynctrl -d " + devname + " -s 'Focus, Auto' " + str(setval)
-	print("UVC_set_autofocus command:", cmd)
+#	print("UVC_set_autofocus command:", cmd)
 	args = shlex.split(cmd)
 	uvc_result = subprocess.call(args)
 	return uvc_result

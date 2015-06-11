@@ -153,17 +153,13 @@ def main_loop(cap):
         crop_width = min(crop_width, cam_width)
         crop_height = min(crop_height, cam_height)
 
-    # TEMPORARY!!!
-    #exit()
-    # TEMPORARY!!!
-
     # Set the width and height to maximum
     # Logitech C920:
 #    cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, cam_width)
 #    cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, cam_height)
     # Logitech Quickcam Pro 9000:
-    # cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1600)
-    #cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 1200)
+#    cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1600)
+#    cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 1200)
     # Ipevo Ziggi HD:
     cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 1920)
     cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 1080)
@@ -174,7 +170,7 @@ def main_loop(cap):
     while True:
         if not freeze:  # "live" mode - grab a new image on each pass round this loop
             ret, img = cap.read()
-            print ret
+#            print ret
             working_img = img  # save creating a new object - directly modify the newly-grabbed frame
         else:  # freeze-frame
             if take_new_frame:
@@ -195,8 +191,10 @@ def main_loop(cap):
             height, width = working_img.shape[:2]
             cropped_img = working_img[0.5 * height * (1 - 1 / magnification):0.5 * height * (1 + 1 / magnification),
                           0.5 * width * (1 - 1 / magnification):0.5 * width * (1 + 1 / magnification)]
-            #working_img = cv2.resize(cropped_img, None, fx=magnification, fy=magnification, interpolation = cv2.INTER_CUBIC)
-            working_img = cv2.resize(cropped_img, None, fx=magnification, fy=magnification, interpolation=cv2.INTER_LINEAR)
+            #working_img = cv2.resize(cropped_img, None, fx=magnification, fy=magnification, \
+                # interpolation = cv2.INTER_CUBIC)
+            working_img = cv2.resize(cropped_img, None, fx=magnification, fy=magnification, \
+                                     interpolation=cv2.INTER_LINEAR)
         #OR
         #height, width = cropped_img.shape[:2]
         #res = cv2.resize(cropped_img, (magnification*width, magnification*height), interpolation = cv2.INTER_CUBIC)
@@ -221,7 +219,7 @@ def main_loop(cap):
         if autocontrast:
             grayscale_img = cv2.cvtColor(working_img, cv2.COLOR_BGR2GRAY)
             working_img = cv2.adaptiveThreshold(grayscale_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
-                cv2.THRESH_BINARY, 99, 2)
+                cv2.THRESH_BINARY, 29, 2)
             if black_on_yellow:
                 working_img = cv2.cvtColor(working_img,cv2.COLOR_GRAY2RGB) # convert back to RGB image
 
@@ -255,7 +253,7 @@ def main_loop(cap):
         else:
             key_wait_time = 0  # i.e. if frame is frozen, wait indefinitely for a key to be pressed
         key = cv2.waitKey(key_wait_time) % 256  # LSB equates to ASCII code for most keys
-        print(key)
+#        print(key)
         if key == 27:  # Esc - quit the program
             break
         elif key == ord('1'):  # 1 - normal colours

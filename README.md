@@ -121,6 +121,6 @@ Questions and feedback
 ----------------------
 
 Please email me with expressions of interest, bug reports, suggestions:
-  mikeh_opensource@btinternet.com
+  mikeh_opensource (at) btinternet.com
 
 
