@@ -1,3 +1,11 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+"""Functions to access various controls on UVC-compatible cameras
+
+Needs libwebcam and its command-line utility uvcdynctrl installed -
+sudo apt-get install libwebcam
+
+"""
 import shlex, string, subprocess
 
 def device_name():
@@ -14,7 +22,7 @@ def device_name():
 		return ""
 	else:
 		devname = uvc_stdout[pos:pos+8].split()[0] # only interested in "video***" bit of the stdout
-		#print "UVC_dev_name() returning", devname
+#		print "UVC_dev_name() returning", devname
 		return devname
 
 def get_focus():
@@ -39,7 +47,7 @@ def set_focus(focusval):
 	if devname == "":
 		return
 	cmd = "uvcdynctrl -d " + devname + " -s 'Focus (absolute)' " + str(focusval)
-#	cmd = "uvcdynctrl -d " + devname + " -s 'Focus' " + str(focusval)
+#	cmd = "uvcdynctrl -d " + devname + " -s 'Focus' " + str(focusval)  # Logitech Webcam Pro 9000
 #	print("UVC_set_focus command:", cmd)
 	args = shlex.split(cmd)
 	uvc_result = subprocess.call(args)
